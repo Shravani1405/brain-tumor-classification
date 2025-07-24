@@ -3,10 +3,10 @@ A deep learning–powered Streamlit web app that classifies MRI brain scans into
 
 #  Brain Tumor MRI Classification using Deep Learning
 
-<<<<<<< HEAD
+
 A deep learning–based Streamlit web app that classifies brain tumors from MRI images into four categories: **Glioma**, **Meningioma**, **Pituitary Tumor**, or **No Tumor**.
 
-![Tumor Example](https://user-images.githubusercontent.com/your_image_example.jpg) <!-- Optional image -->
+
 
 ---
 
