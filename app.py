@@ -1,34 +1,23 @@
 import streamlit as st
 import numpy as np
-from tensorflow.keras.models import load_model
 from PIL import Image
+from tensorflow.keras.models import load_model
 
-# Load trained model
-model = load_model('model/best_model.h5')
+from utils import preprocess_and_predict
 
-# Class names
-class_names = ['glioma', 'meningioma', 'no tumor', 'pituitary']
+# Load model
+model = load_model("models/brain_tumor_model.h5")
 
-# Title
-st.title("Brain Tumor MRI Image Classification")
-st.markdown("Upload an MRI scan to classify the type of brain tumor.")
+# Streamlit UI
+st.set_page_config(page_title="Brain Tumor MRI Classification", layout="centered")
+st.title("🧠 Brain Tumor MRI Classification")
+st.write("Upload an MRI image to classify it as **Tumor** or **No Tumor**.")
 
-# Upload image
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
+uploaded_file = st.file_uploader("Choose an MRI image...", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_column_width=True)
-
-    # Preprocess
-    image = image.resize((150, 150))
-    image_array = np.array(image) / 255.0
-    image_array = np.expand_dims(image_array, axis=0)
-
-    # Prediction
-    predictions = model.predict(image_array)
-    predicted_class = class_names[np.argmax(predictions)]
-    confidence = np.max(predictions) * 100
-
-    st.markdown(f"### Prediction: **{predicted_class}**")
-    st.markdown(f"Confidence: **{confidence:.2f}%**")
+    
+    prediction, confidence = preprocess_and_predict(image, model)
+    st.markdown(f"### 🎯 Prediction: `{prediction}`")
+    st.markdown(f"### 🔍 Confidence: `{confidence:.2f}%`")
